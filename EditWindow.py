@@ -21,17 +21,17 @@ def manipulate_data(file_path, width_input, height_input):
             edit_entry = Entry(window, width=12)  # creates a widget used for the input used in an edition
             edit_entry.insert(0, table.set(selected_item, cell_column))  # sets the default value for the entry widget
             # on the return key press, calls the save method to update the selected cell with an edited entry
-            edit_entry.bind('<Return>', lambda e: save_edited_cell(edit_entry, selected_item, cell_row, cell_column))
+            edit_entry.bind('<Return>', lambda e: save_edited_cell(edit_entry, cell_row, cell_column))
             edit_entry.place(relx=0, rely=0, relwidth=1, relheight=1)  # places the widget
             edit_entry.focus_set()  # focuses on it
             edit_entry.selection_range(0, END)  # makes the entry writeable
 
     # method used to save the edited cell data
-    def save_edited_cell(entry, item, r, c):
+    def save_edited_cell(entry, r, c):
         edited_value = entry.get()  # gets the value from the entry
-        data[r][c] = edited_value  # replaces the edited value in the data
-        table.set(item, column=c, value=edited_value)  # sets it on the table
+        data[r + 1][c] = edited_value  # replaces the edited value in the data (r + 1 to account for the header row)
         entry.destroy()  # gets rid of the entry
+        table.set(table.get_children()[r], column=c, value=edited_value)  # update the value in the table
 
     window_width = width_input
     window_height = height_input
